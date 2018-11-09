@@ -7,6 +7,7 @@ var axiosInstance = axios.create({
 
 export default {
   user: {
-    sign_up: (user) => axiosInstance.post('/api/v1/sign_up', user).then(res => res)
+    sign_up: (user) => axiosInstance.post('/api/v1/sign_up', user).then(res => res),
+    sign_in: (user) => axiosInstance.post('/api/v1/sign_in', user).then(res => res.data)
   }
 }
