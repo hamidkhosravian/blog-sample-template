@@ -1,6 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from "react-redux";
+import { withRouter } from 'react-router-dom';
+import Button from "@material-ui/core/Button";
 import InfoIcon from '@material-ui/icons/Info';
 import GridList from '@material-ui/core/GridList';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,9 +11,12 @@ import GridListTile from '@material-ui/core/GridListTile';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 
-import { fetchArticles } from "../../actions/articles";
+import { articlesList, createArticle } from "../../actions/articles";
 
 class ArticleIndexPage extends React.Component {
+  constuctor() {
+    this.routeChange = this.routeChange.bind(this);
+  }
 
   state = {
     page: 1,
@@ -24,35 +29,43 @@ class ArticleIndexPage extends React.Component {
   }
 
   onInit = props => {
-      this.setState({ page: this.state.page, fetching: true });
+      this.setState({ page: this.state.page });
       this.handleGetAllIndex(this.state.page);
   };
 
   handleGetAllIndex = (page) => {
-    fetchArticles({limit: this.state.limit, page: page}).
+    this.props.articlesList({limit: this.state.limit, page: page}).
       then(articles => {
         this.updateArticleState(articles)
       });
   }
 
   updateArticleState = (articles) => {
-      this.setState({ articles: articles });
+    this.setState({ articles: articles.data });
   }
+
+  routeChange = (id) => {
+    this.props.history.push(`articles/${id}`);
+  }
+
+  articlePage = () => this.props.history.push('/article/new')
 
   articles_index = () => {
     const { articles } = this.state;
-    const { isAdmin, classes } = this.props;
+    const { isAdmin, classes, isAuthenticated } = this.props;
 
     return (
       <div className={classes.root}>
-        <GridList cellHeight={180} className={classes.gridList}>
-          <GridListTile key="Subheader" cols={2} style={{ height: 'auto' }}>
-            <ListSubheader component="div">Article List</ListSubheader>
-          </GridListTile>
+        { isAuthenticated &&
+          <Button variant="contained" onClick={this.articlePage}>
+            New
+          </Button>
+        }
+        <GridList className={classes.gridList}>
           {articles.map(article => (
-            <GridListTile key={article.id}>
-              <img src={article.image } alt={article.title} />
+            <GridListTile onClick={e => this.routeChange(article.id)} key={article.id}>
               <GridListTileBar
+                className={classes.gridList}
                 title={article.title}
                 subtitle={<span>by: {article.created_by}</span>}
               />
@@ -70,7 +83,7 @@ class ArticleIndexPage extends React.Component {
     return (
       <div>
         {
-          articles.length === 0  ?
+          articles.length != 0  ?
           this.articles_index()
           :
           <h3>Articles is empty.</h3>
@@ -83,14 +96,13 @@ class ArticleIndexPage extends React.Component {
 ArticleIndexPage.propTypes = {
   classes: PropTypes.object.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-  fetchArticles: PropTypes.func.isRequired,
+  articlesList: PropTypes.func.isRequired,
   message: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
   return {
     isAuthenticated: !!state.user.token,
-    isAdmin: state.user.admin,
     message: state.message
   }
 }
@@ -102,14 +114,15 @@ const styles = theme => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     backgroundColor: theme.palette.background.paper,
+    marginTop: 24
   },
   gridList: {
-    width: 500,
-    height: 450,
+    width: '100%',
+    height: '100%'
   },
   icon: {
     color: 'rgba(255, 255, 255, 0.54)',
   },
 });
 
-export default withStyles(styles)(connect(mapStateToProps, { fetchArticles })(ArticleIndexPage));
+export default withRouter(withStyles(styles)(connect(mapStateToProps, { articlesList, createArticle })(ArticleIndexPage)));

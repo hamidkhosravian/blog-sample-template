@@ -10,7 +10,6 @@ class HomePage extends React.Component {
 
     return (
       <div>
-        { message.response && <h3 style={{color: 'green'}}>{message.response} </h3> }
         <h1 style={{margin: 4}}>HomePage</h1>
         { !isAuthenticated &&
           <div>
@@ -19,12 +18,12 @@ class HomePage extends React.Component {
                 Sign In
               </Button>
               <Button style={{margin: 4}} variant="contained" color="secondary" href="/sign_up">
-                Sign In
+                Sign Up
               </Button>
             </div>
           </div>
         }
-
+        { message.response && <h3 style={{ color: 'blue' }}>{message.response} </h3> }
         <div style={{margin: 24}}>
           <ArticleIndexPage />
         </div>

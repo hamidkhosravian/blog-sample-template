@@ -1,6 +1,6 @@
 import api from "../api";
 import {
-  ARTICLES_FETCHED, ARTICLES_SHOWED,
+  MESSAGE, ARTICLES_FETCHED, ARTICLES_SHOWED,
   ARTICLE_CREATED, ARTICLE_UPDATED, ARTICLE_DELETED
 } from "../types";
 
@@ -29,24 +29,32 @@ const articleDeleted = () => ({
   type: ARTICLE_DELETED
 });
 
-export const fetchArticles = (pagination) => dispatch =>
+export const showMessage = (message) => ({
+  type: MESSAGE,
+  message
+});
+
+export const articlesList = (pagination) => dispatch =>
   api.articles
     .index(pagination)
     .then(articles => dispatch(articlesFetched(articles)));
 
-export const showArticle = () => dispatch =>
+export const showArticle = (id) => dispatch =>
   api.articles
-    .show()
-    .then(articles => dispatch(articleShowed(articles)));
+    .show(id)
+    .then(articles => dispatch(articleShowed(articles)))
+    .catch(message => {
+      dispatch(showMessage({response: "Article not found!"}))
+    });
 
 export const createArticle = data => dispatch =>
   api.articles
     .create(data)
     .then(article => dispatch(articleCreated(article)));
 
-export const updateArticle = data => dispatch =>
+export const updateArticle = (id, data) => dispatch =>
   api.articles
-    .update(data)
+    .update(id, data)
     .then(article => dispatch(articleUpdated(article)));
 
 export const deleteArticle = data => dispatch =>

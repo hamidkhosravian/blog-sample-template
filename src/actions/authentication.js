@@ -24,7 +24,7 @@ export const sign_in = (data) => (dispatch) =>
     localStorage.token = user.token.token;
     localStorage.expire_at = user.token.expire_at;
     localStorage.email = user.email;
-    localStorage.admin = user.is_admin;
+    localStorage.is_admin = user.is_admin;
     setAuthorizationHeader(user.token.token);
     dispatch(userLoggedIn(user))
 });
