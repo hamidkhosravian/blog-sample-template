@@ -1,7 +1,8 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import ArticleIndexPage from '../ArticlePage/ArticleIndexPage';
 
 class HomePage extends React.Component {
   render() {
@@ -10,15 +11,23 @@ class HomePage extends React.Component {
     return (
       <div>
         { message.response && <h3 style={{color: 'green'}}>{message.response} </h3> }
-        <h1>HomePage</h1>
+        <h1 style={{margin: 4}}>HomePage</h1>
         { !isAuthenticated &&
           <div>
             <div>
-              <Link style={{margin: 8}} to="/sign_in" >Sign In</Link>
-              <Link style={{margin: 8}} to="/sign_up" >Sign Up</Link>
+              <Button style={{margin: 4}} variant="contained" color="primary" href="/sign_in">
+                Sign In
+              </Button>
+              <Button style={{margin: 4}} variant="contained" color="secondary" href="/sign_up">
+                Sign In
+              </Button>
             </div>
           </div>
         }
+
+        <div style={{margin: 24}}>
+          <ArticleIndexPage />
+        </div>
       </div>
     )
   }
