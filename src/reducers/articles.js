@@ -1,4 +1,3 @@
-import { createSelector } from "reselect";
 import { ARTICLES_FETCHED, ARTICLES_SHOWED, ARTICLE_CREATED, ARTICLE_UPDATED, ARTICLE_DELETED } from "../types";
 
 export default function articles(state = {}, action = {}) {
