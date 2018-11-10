@@ -8,7 +8,6 @@ import GuestRoute from "./routes/GuestRoute";
 import HomePage from "./views/HomePage/HomePage";
 import SignUpPage from "./views/SignUpPage/SignUpPage";
 import SignInPage from "./views/SignInPage/SignInPage";
-import ArticleIndexPage from "./views/ArticlePage/ArticleIndexPage";
 import ArticlePage from "./views/ArticlePage/ArticlePage";
 import ArticleEditPage from "./views/ArticlePage/ArticleEditPage";
 import ArticleNewPage from "./views/ArticlePage/ArticleNewPage";

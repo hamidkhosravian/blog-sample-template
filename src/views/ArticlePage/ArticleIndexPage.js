@@ -3,12 +3,9 @@ import PropTypes from "prop-types";
 import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import Button from "@material-ui/core/Button";
-import InfoIcon from '@material-ui/icons/Info';
 import GridList from '@material-ui/core/GridList';
-import IconButton from '@material-ui/core/IconButton';
 import { withStyles } from '@material-ui/core/styles';
 import GridListTile from '@material-ui/core/GridListTile';
-import ListSubheader from '@material-ui/core/ListSubheader';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 
 import { articlesList, createArticle } from "../../actions/articles";
@@ -34,8 +31,8 @@ class ArticleIndexPage extends React.Component {
   };
 
   handleGetAllIndex = (page) => {
-    this.props.articlesList({limit: this.state.limit, page: page}).
-      then(articles => {
+    this.props.articlesList({limit: this.state.limit, page: page})
+      .then(articles => {
         this.updateArticleState(articles)
       });
   }
@@ -52,7 +49,7 @@ class ArticleIndexPage extends React.Component {
 
   articles_index = () => {
     const { articles } = this.state;
-    const { isAdmin, classes, isAuthenticated } = this.props;
+    const { classes, isAuthenticated } = this.props;
 
     return (
       <div className={classes.root}>
@@ -78,12 +75,11 @@ class ArticleIndexPage extends React.Component {
 
   render() {
     const { articles } = this.state;
-    const { message, isAuthenticated } = this.props;
 
     return (
       <div>
         {
-          articles.length != 0  ?
+          articles.length !== 0  ?
           this.articles_index()
           :
           <h3>Articles is empty.</h3>

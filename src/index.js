@@ -23,6 +23,7 @@ if(localStorage.token){
    is_admin: localStorage.is_admin,
    token: localStorage.token
   };
+
   setAuthorizationHeader(localStorage.token);
   store.dispatch(userLoggedIn(user));
 }

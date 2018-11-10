@@ -1,6 +1,5 @@
 import React from "react";
 import PropTypes from "prop-types";
-import Validator from "validator";
 import Button from "@material-ui/core/Button";
 import { withRouter } from 'react-router-dom';
 import { withStyles } from '@material-ui/core/styles';
@@ -58,7 +57,7 @@ class ArticleForm extends React.Component {
 
   showErrorResponse = () => {
     const { errors } = this.state;
-
+    
     return (
       <div style={{width: '100%'}}>
         <Snackbar

@@ -4,20 +4,13 @@ import { connect } from "react-redux";
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
-import InfoIcon from '@material-ui/icons/Info';
-import GridList from '@material-ui/core/GridList';
 import { withStyles } from '@material-ui/core/styles';
-import IconButton from '@material-ui/core/IconButton';
-import GridListTile from '@material-ui/core/GridListTile';
-import ListSubheader from '@material-ui/core/ListSubheader';
-import GridListTileBar from '@material-ui/core/GridListTileBar';
-
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
+import Snackbar from '@material-ui/core/Snackbar';
+import IconButton from '@material-ui/core/IconButton';
+import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 
@@ -27,6 +20,7 @@ class ArticlePage extends React.Component {
   state = {
     article: null,
     open: false,
+    openDialog: true
   };
 
   componentDidMount = () =>{
@@ -38,8 +32,8 @@ class ArticlePage extends React.Component {
   };
 
   handleGetArticle = () => {
-    this.props.showArticle(this.props.match.params.id).
-      then(article => {
+    this.props.showArticle(this.props.match.params.id)
+      .then(article => {
         this.updateArticleState(article)
       }).catch(error => this.props.history.push('/'));
   }
@@ -54,10 +48,12 @@ class ArticlePage extends React.Component {
 
   handleDeleteArticle = () => {
     const id = this.props.match.params.id
-    this.props.deleteArticle(id).
-      then(article => {
+    this.props.deleteArticle(id)
+      .then(article => {
         this.props.history.push("/")
-      }).catch(error => this.setState({ error: error }));
+      }).catch(error => {
+        this.setState({ open: false, openDialog: true, errors: error.response.data })
+      });
   }
 
   updateArticleState = (article) => {
@@ -72,15 +68,54 @@ class ArticlePage extends React.Component {
     this.setState({ open: false });
   };
 
+  handleCloseDialog = (event, reason) => {
+    this.setState({ openDialog: false });
+  };
+
+  showErrorResponse = () => {
+    const { errors } = this.state;
+
+    return (
+      <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'center',
+          }}
+          open={this.state.openDialog}
+          autoHideDuration={6000}
+          onClose={this.handleClose}
+          message={errors.response[0]}
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              onClick={this.handleCloseDialog}
+            >
+              <CloseIcon />
+            </IconButton>,
+          ]}
+        />
+      </div>
+    )
+  }
+
   render() {
-    const { article } = this.state;
+    const { article, errors } = this.state;
     const { message, classes, isAuthenticated, isAdmin } = this.props;
 
     return (
       <div>
         <Link to="/">Home Page</Link>
         <br/>
-        { message.response && <h3 style={{ color: 'blue' }}>{message.response} </h3> }
+        <div>
+          { message && <h3 style={{ color: 'blue' }}>{message.response} </h3> }
+        </div>
+
+        <div>
+          { errors && this.showErrorResponse() }
+        </div>
 
         {
           article &&
@@ -94,7 +129,7 @@ class ArticlePage extends React.Component {
             <span>created by: {article.created_at}</span>
 
             {
-              isAuthenticated && (isAdmin || article.is_owner) &&
+              isAuthenticated && (JSON.parse(isAdmin) === true || article.is_owner) &&
               <div>
                 <Button variant="contained" color="primary" onClick={this.handleUpdateArticle} className={classes.button}>
                   Edit
@@ -147,13 +182,13 @@ ArticlePage.propTypes = {
   showArticle: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
   message: PropTypes.object.isRequired,
-  isAdmin: PropTypes.bool.isRequired
+  isAdmin: PropTypes.string.isRequired
 }
 
 function mapStateToProps(state) {
   return {
     isAuthenticated: !!state.user.token,
-    isAdmin: !!state.user.is_admin,
+    isAdmin: state.user.is_admin,
     message: state.message
   }
 }
