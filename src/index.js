@@ -13,14 +13,17 @@ import { userLoggedIn } from "./actions/authentication";
 import setAuthorizationHeader from "./utils/setAuthorizationHeader";
 
 const store = createStore(
-  rootReducer, 
+  rootReducer,
   composeWithDevTools(applyMiddleware(thunk))
 );
 
 if(localStorage.token){
   const user = {
+   email: localStorage.email,
+   is_admin: localStorage.is_admin,
    token: localStorage.token
   };
+
   setAuthorizationHeader(localStorage.token);
   store.dispatch(userLoggedIn(user));
 }

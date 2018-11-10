@@ -17,7 +17,7 @@ class SignInPage extends React.Component {
         <h1>Sign Up</h1>
         <SignInForm submit={this.submit} />
         <br/>
-        <Link to="/sign_in  " >Sign In</Link>
+        <Link to="/sign_up" >Sign up</Link>
       </div>
     )
   }
