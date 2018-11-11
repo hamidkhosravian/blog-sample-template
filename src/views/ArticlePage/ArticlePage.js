@@ -14,6 +14,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 
+import CommentPage from "../CommentPage/CommentPage";
+
 import { showArticle, updateArticle, deleteArticle } from "../../actions/articles";
 
 class ArticlePage extends React.Component {
@@ -127,6 +129,7 @@ class ArticlePage extends React.Component {
             <span>created at: {article.created_at}</span>
             <br/>
             <span>created by: {article.created_at}</span>
+            <CommentPage article_id={article.id}/>
 
             {
               isAuthenticated && (JSON.parse(isAdmin) === true || article.is_owner) &&

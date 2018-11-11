@@ -17,9 +17,9 @@ export default {
     delete: (id)    => axiosInstance.delete(`/api/v1/articles/${id}`).then(res => res.data)
   },
   comments: {
-    index:  (pagination) => axiosInstance.get(`/api/v1/comments?page=${pagination.page}&limit=${pagination.limit}`).then(res => res.data.comments),
-    create: (data)  => axiosInstance.post(`/api/v1/comments`, data).then(res => res.data),
-    update: (id, data)   => axiosInstance.put(`/api/v1/comments/${id}`, data).then(res => res.data),
-    delete: (id)    => axiosInstance.delete(`/api/v1/comments/${id}`).then(res => res.data)
+    index:  (article_id, pagination) => axiosInstance.get(`/api/v1/articles/${article_id}/comments?page=${pagination.page}&limit=${pagination.limit}`).then(res => res.data.comments),
+    create: (article_id, data)  => axiosInstance.post(`/api/v1/articles/${article_id}/comments`, data).then(res => res.data),
+    update: (article_id, id, data)   => axiosInstance.put(`/api/v1/articles/${article_id}/comments/${id}`, data).then(res => res.data),
+    delete: (article_id, id)    => axiosInstance.delete(`/api/v1/articles/${article_id}/comments/${id}`).then(res => res.data)
   },
 }

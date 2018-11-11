@@ -28,22 +28,22 @@ export const showMessage = (message) => ({
   message
 });
 
-export const commentsList = (pagination) => dispatch =>
+export const commentsList = (article_id, pagination) => dispatch =>
   api.comments
-    .index(pagination)
+    .index(article_id, pagination)
     .then(comments => dispatch(commentsFetched(comments)));
 
-export const createComment = data => dispatch =>
+export const createComment = (article_id, data) => dispatch =>
   api.comments
-    .create(data)
+    .create(article_id, data)
     .then(comment => dispatch(commentCreated(comment)));
 
-export const updateComment = (id, data) => dispatch =>
+export const updateComment = (article_id, id, data) => dispatch =>
   api.comments
-    .update(id, data)
+    .update(article_id, id, data)
     .then(comment => dispatch(commentUpdated(comment)));
 
-export const deleteComment = data => dispatch =>
+export const deleteComment = (article_id, id) => dispatch =>
   api.comments
-    .delete(data)
+    .delete(article_id, id)
     .then(comment => dispatch(commentDeleted));

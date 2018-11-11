@@ -20,6 +20,10 @@ const App = ({ location }) => (
     <Route location={location} path="/articles/:id" exact component={ArticlePage}></Route>
     <UserRoute location={location} path="/article/new" exact component={ArticleNewPage}></UserRoute>
     <UserRoute location={location} path="/articles/:id/edit" exact component={ArticleEditPage}></UserRoute>
+    <Route location={location} path="/articles/:article_id/comments" exact component={ArticlePage}></Route>
+    <UserRoute location={location} path="/articles/:article_id/comments/new" exact component={ArticleNewPage}></UserRoute>
+    <UserRoute location={location} path="/articles/:article_id/comments/edit" exact component={ArticleEditPage}></UserRoute>
+
   </div>
 );
 
