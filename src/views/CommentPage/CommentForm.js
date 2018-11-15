@@ -22,6 +22,7 @@ class CommentForm extends React.Component {
 
   componentDidMount = () =>{
     if(this.props.comment){
+      console.log(this.props.comment);
       this.setState({comment: this.props.comment})
     }
   }

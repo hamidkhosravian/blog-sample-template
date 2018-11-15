@@ -129,8 +129,6 @@ class ArticlePage extends React.Component {
             <span>created at: {article.created_at}</span>
             <br/>
             <span>created by: {article.created_at}</span>
-            <CommentPage article_id={article.id}/>
-
             {
               isAuthenticated && (JSON.parse(isAdmin) === true || article.is_owner) &&
               <div>
@@ -162,6 +160,8 @@ class ArticlePage extends React.Component {
               </Dialog>
               </div>
             }
+            <br/>
+            <CommentPage article_id={article.id}/>
           </div>
         }
       </div>
@@ -184,8 +184,7 @@ ArticlePage.propTypes = {
   deleteArticle: PropTypes.func.isRequired,
   showArticle: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  message: PropTypes.object.isRequired,
-  isAdmin: PropTypes.string.isRequired
+  message: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
