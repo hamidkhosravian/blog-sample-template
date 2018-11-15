@@ -49,15 +49,10 @@ class ArticleIndexPage extends React.Component {
 
   articles_index = () => {
     const { articles } = this.state;
-    const { classes, isAuthenticated } = this.props;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
-        { isAuthenticated &&
-          <Button variant="contained" onClick={this.articlePage}>
-            New
-          </Button>
-        }
         <GridList className={classes.gridList}>
           {articles.map(article => (
             <GridListTile onClick={e => this.routeChange(article.id)} key={article.id}>
@@ -75,9 +70,17 @@ class ArticleIndexPage extends React.Component {
 
   render() {
     const { articles } = this.state;
+    const { isAuthenticated } = this.props;
 
     return (
       <div>
+
+        { isAuthenticated &&
+          <Button variant="contained" onClick={this.articlePage}>
+            New
+          </Button>
+        }
+
         {
           articles.length !== 0  ?
           this.articles_index()

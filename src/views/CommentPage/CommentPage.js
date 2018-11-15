@@ -18,8 +18,10 @@ class CommentPage extends React.Component {
   }
 
   submit = data =>
-    this.props.createComment(this.props.article_id, data).then((comments) => {
-      this.state.comments.unshift(comments.data.comments[comments.length-1])
+    this.props.createComment(this.props.article_id, data).then((comment) => {
+      const comments = this.state.comments
+      comments.unshift(comment.data);
+      this.setState({ comments: comments });
   });
 
   componentDidMount = () =>{
@@ -55,15 +57,14 @@ class CommentPage extends React.Component {
             </ListItem>
           ))}
         </List>
-
-        <CommentForm submit={this.submit} />
       </div>
     )
   }
 
   render() {
     const { comments } = this.state;
-    console.log(comments);
+    const { isAuthenticated } = this.props;
+
     return (
       <div>
         {
@@ -71,6 +72,10 @@ class CommentPage extends React.Component {
           this.comments_index()
           :
           <h3>Comments is empty.</h3>
+        }
+        {
+          isAuthenticated &&
+          <CommentForm submit={this.submit} />
         }
       </div>
     )

@@ -35,8 +35,11 @@ class CommentForm extends React.Component {
     const errors = this.validate(this.state.comment);
     this.setState({ errors });
     if (Object.keys(errors).length === 0) {
+      const comment = this.state.comment
+      this.setState({ comment: { body: "" } })
+
       this.props
-        .submit(this.state.comment)
+        .submit(comment)
         .catch(err =>
           this.setState({ errors: err.response.data, open: true })
         );
