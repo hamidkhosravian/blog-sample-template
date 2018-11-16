@@ -1,6 +1,6 @@
 import api from "../api";
 import {
-  MESSAGE, COMMENTS_FETCHED, COMMENT_CREATED, COMMENT_UPDATED, COMMENT_DELETED
+  MESSAGE, COMMENTS_FETCHED, COMMENT_CREATED, COMMENT_DELETED
 } from "../types";
 
 // data.entities.comments

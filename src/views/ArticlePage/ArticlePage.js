@@ -128,7 +128,7 @@ class ArticlePage extends React.Component {
             <br/>
             <span>created at: {article.created_at}</span>
             <br/>
-            <span>created by: {article.created_at}</span>
+            <span>created by: {article.created_by}</span>
             {
               isAuthenticated && (JSON.parse(isAdmin) === true || article.is_owner) &&
               <div>
