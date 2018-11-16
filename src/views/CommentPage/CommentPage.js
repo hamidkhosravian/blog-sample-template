@@ -7,30 +7,22 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import CommentForm from './CommentForm';
-import { commentsList, createComment, updateComment } from "../../actions/comments";
+import { commentsList, createComment} from "../../actions/comments";
 
 class CommentPage extends React.Component {
 
-    create_submit = data =>
-      this.props.createComment(this.props.article_id, data).then((comment) => {
-        const comments = this.state.comments
-        comments.unshift(comment.data);
-        this.setState({ comments: comments });
-    });
-
-    update_submit = (i, data) =>
-      this.props.updateComment(this.props.article_id, this.state.data.id, data).then((comment) => {
-        this.state.comments[this.state.comment_index] = comment.data;
-        const comments = this.state.comments;
-        this.setState({ comments: comments });
-    });
+  submit = data =>
+    this.props.createComment(this.props.article_id, data).then((comment) => {
+      const comments = this.state.comments
+      comments.unshift(comment.data);
+      this.setState({ comments: comments });
+  });
 
   state = {
     page: 1,
     limit: 5,
     article_id: null,
-    comments: [],
-    comment_index: null
+    comments: []
   }
 
   componentDidMount = () =>{
@@ -52,10 +44,6 @@ class CommentPage extends React.Component {
   updateCommentState = (comments) => {
     this.setState({ comments: comments.data });
   }
-  //
-  // handleUpdateComment = (index, comment) => {
-  //   this.setState({ comment_index: index, comment_form: <CommentForm submit={this.update_submit} comment={comment}/> });
-  // }
 
   comments_index = () => {
     const { comments } = this.state;
@@ -72,15 +60,9 @@ class CommentPage extends React.Component {
 
             {
               isAuthenticated && (JSON.parse(isAdmin) === true || comment.is_owner) &&
-              <div>
-                <Button color="primary" className={classes.button} onClick={e => this.handleUpdateComment(index, comment)}>
-                  Update
-                </Button>
-
                 <Button color="secondary" onClick={this.props.cancel} className={classes.button}>
-                  Cancel
+                  Delete
                 </Button>
-              </div>
             }
             </div>
           ))}
@@ -103,7 +85,7 @@ class CommentPage extends React.Component {
         }
         {
           isAuthenticated &&
-          <CommentForm submit={this.create_submit} />
+          <CommentForm submit={this.submit} />
         }
       </div>
     )
@@ -116,8 +98,7 @@ CommentPage.propTypes = {
   commentsList: PropTypes.func.isRequired,
   message: PropTypes.object.isRequired,
   commentsList: PropTypes.func.isRequired,
-  createComment: PropTypes.func.isRequired,
-  updateComment: PropTypes.func.isRequired
+  createComment: PropTypes.func.isRequired
 }
 
 function mapStateToProps(state) {
@@ -144,4 +125,4 @@ const styles = theme => ({
   },
 });
 
-export default withStyles(styles)(connect(mapStateToProps, { commentsList, createComment, updateComment })(CommentPage));
+export default withStyles(styles)(connect(mapStateToProps, { commentsList, createComment})(CommentPage));

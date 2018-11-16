@@ -14,11 +14,6 @@ const commentCreated = data => ({
   data
 });
 
-const commentUpdated = data => ({
-  type: COMMENT_UPDATED,
-  data
-});
-
 const commentDeleted = () => ({
   type: COMMENT_DELETED
 });
@@ -37,11 +32,6 @@ export const createComment = (article_id, data) => dispatch =>
   api.comments
     .create(article_id, data)
     .then(comment => dispatch(commentCreated(comment)));
-
-export const updateComment = (article_id, id, data) => dispatch =>
-  api.comments
-    .update(article_id, id, data)
-    .then(comment => dispatch(commentUpdated(comment)));
 
 export const deleteComment = (article_id, id) => dispatch =>
   api.comments
