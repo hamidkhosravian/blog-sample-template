@@ -14,6 +14,8 @@ import CloseIcon from '@material-ui/icons/Close';
 import DeleteIcon from '@material-ui/icons/Delete';
 import SaveIcon from '@material-ui/icons/Save';
 
+import CommentPage from "../CommentPage/CommentPage";
+
 import { showArticle, updateArticle, deleteArticle } from "../../actions/articles";
 
 class ArticlePage extends React.Component {
@@ -126,8 +128,7 @@ class ArticlePage extends React.Component {
             <br/>
             <span>created at: {article.created_at}</span>
             <br/>
-            <span>created by: {article.created_at}</span>
-
+            <span>created by: {article.created_by}</span>
             {
               isAuthenticated && (JSON.parse(isAdmin) === true || article.is_owner) &&
               <div>
@@ -159,6 +160,8 @@ class ArticlePage extends React.Component {
               </Dialog>
               </div>
             }
+            <br/>
+            <CommentPage article_id={article.id}/>
           </div>
         }
       </div>
@@ -181,8 +184,7 @@ ArticlePage.propTypes = {
   deleteArticle: PropTypes.func.isRequired,
   showArticle: PropTypes.func.isRequired,
   classes: PropTypes.object.isRequired,
-  message: PropTypes.object.isRequired,
-  isAdmin: PropTypes.string.isRequired
+  message: PropTypes.object.isRequired
 }
 
 function mapStateToProps(state) {
